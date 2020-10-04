@@ -1,17 +1,17 @@
+fn read_line<R: std::io::BufRead>(reader: &mut R) -> String {
+  let mut line = String::new();
+  reader.read_line(&mut line).unwrap();
+  line
+}
+
 fn main()
 {
   let stdin = std::io::stdin();
-  let mut line = String::new();
-  stdin.read_line(&mut line).unwrap();
-  let ntc: i32 = line.trim().parse().unwrap();
+  let mut reader = std::io::BufReader::new(stdin.lock());
+  let ntc: i32 = read_line(&mut reader).trim().parse().unwrap();
   for _ in 0..ntc {
-    line.clear();
-    stdin.read_line(&mut line).unwrap();
-    let arr: Vec<i32> = line.trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
-    let max = match arr.iter().max() {
-      Some(x) => *x,
-      None => -1
-    };
+    let arr: Vec<i32> = read_line(&mut reader).split_whitespace().map(|x| x.parse().unwrap()).collect();
+    let max = arr.iter().max().unwrap();
     println!("{}", max);
   }
 }
